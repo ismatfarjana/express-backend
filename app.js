@@ -11,7 +11,7 @@ const app = express();
 const PORT = process.env.PORT
 const DB_STRING = process.env.DB_STRING
 
-
+mongoose.set("strictQuery", false);
 mongoose.connect(
   DB_STRING,
   {
