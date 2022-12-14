@@ -3,6 +3,8 @@ dotenv.config();
 const cors = require('cors');
 const express = require('express');
 const mongoose = require('mongoose');
+const authRoutes = require('./routes/auth')
+
 const app = express();
 
 
@@ -20,5 +22,7 @@ mongoose.connect(
 
 app.use(cors());
 app.use(express.json());
+
+app.use(authRoutes);
 
 app.listen(PORT, () => console.log(`API listening at http://localhost:${PORT}!`))
