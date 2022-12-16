@@ -24,7 +24,8 @@ function authenticated(req, res, next) {
 
     // valid token
     User.findById(decoded.id, (err, user) => {
-      // err // no user
+      // err 
+      // no user
       if (err || !user) return res.status(401).send(noAuth);
 
       // user
