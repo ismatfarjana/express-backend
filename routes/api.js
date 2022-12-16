@@ -1,15 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const { User } = require('./../models/user');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
 // middleware
 function authenticated(req, res, next) {
   const header = req.get('Authorization') ?? '';
-  const noAuth = { err: 'Invalid Token', noAuth: true }
+  const noAuth = { err: 'Invalid Token', noAuth: true };
 
-  if (header.toLowercase().indexOf('bearer') === -1) {
-    return res.status(401).send(noAuth)
+  if (header.toLowerCase().indexOf('bearer') === -1) {
+    return res.status(401).send(noAuth);
   }
 
   const token = header.split(' ')[1];
@@ -31,6 +31,13 @@ function authenticated(req, res, next) {
       // user
       req.readerUser = user;
       next();
-    })
-  })
+    });
+  });
 }
+
+
+router.get('/feeds', authenticated, (req, res) => {
+  res.send({ feeds: req.readerUser.feeds });
+});
+
+module.exports = router;
