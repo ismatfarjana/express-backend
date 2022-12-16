@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const { User } = require('./../models/user');
 const jwt = require('jsonwebtoken');
+const Parser = require('rss-parser');
+const parser = new Parser();
 
 // middleware
 function authenticated(req, res, next) {
@@ -73,6 +75,23 @@ router.delete('/feeds/:recordId', authenticated, (req, res) => {
   user.save();
 
   res.send({ feeds: user.feeds });
+});
+
+router.get('/feeds/:recordId', authenticated, (req, res) => {
+  const user = req.readerUser;
+  const { recordId } = req.params;
+
+  const index = user.feeds.findIndex(record => record._id == recordId);
+
+  if (index === -1) {
+    return res.status(404).send({ err: 'Not found' });
+  }
+
+  const feed = user.feeds[index];
+
+  parser.parseURL(feed.url).then(feed => {
+    res.send(feed);
+  });
 });
 
 module.exports = router;
