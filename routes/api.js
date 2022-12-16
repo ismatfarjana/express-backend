@@ -60,4 +60,19 @@ router.post('/feeds', authenticated, (req, res) => {
   res.send({ feeds: user.feeds });
 });
 
+router.delete('/feeds/:recordId', authenticated, (req, res) => {
+  const user = req.readerUser;
+  const { recordId } = req.params;
+
+  const index = user.feeds.findIndex(record => record._id == recordId);
+
+  if (index > -1) {
+    user.feeds.splice(index, 1);
+  }
+
+  user.save();
+
+  res.send({ feeds: user.feeds });
+});
+
 module.exports = router;
