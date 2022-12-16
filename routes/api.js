@@ -40,4 +40,24 @@ router.get('/feeds', authenticated, (req, res) => {
   res.send({ feeds: req.readerUser.feeds });
 });
 
+router.post('/feeds', authenticated, (req, res) => {
+  const { name, url } = req.body;
+  const user = req.readerUser;
+
+  if (!name || !url) {
+    return res.status(422).send({
+      err: 'Please supply name and url'
+    });
+  }
+
+  user.feeds.push({
+    name,
+    url
+  });
+
+  user.save();
+
+  res.send({ feeds: user.feeds });
+});
+
 module.exports = router;

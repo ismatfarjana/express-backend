@@ -8,13 +8,14 @@ const UserSchema = new Schema({
   },
   password: String,
   feeds: [{
+    name: String,
     url: String
   }]
-})
+});
 
-const User = mongoose.model('users', UserSchema)
+const User = mongoose.model('users', UserSchema);
 
 module.exports = {
   Schema: UserSchema,
   User
-}
+};
